@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+   name: forecaster
+spec:
+   containers:
+   - name: forecaster-c
+     image: aisecr.azurecr.io/forecaster
+     ports:
+     - containerPort: 3100

@@ -1,0 +1,7 @@
+fastapi[standard]
+pandas
+mlflow
+prophet
+kfp
+azure-storage-blob
+azure-identity
