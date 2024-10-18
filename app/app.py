@@ -1,13 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd
-from .helpers.request import ForecastRequest, TrainModelRequest,TrainAllModelsRequest, create_forecast_index
+from .helpers.request import ForecastRequest, TrainModelRequest, TrainAllModelsRequest, create_forecast_index
 from .registry.mlflow.handler import MLFlowHandler
 from typing import List
 import uvicorn 
 from kfp import Client
 from contextlib import asynccontextmanager
-from dotenv import load_dotenv
 
 # Logging
 import logging
@@ -66,11 +65,9 @@ async def train_model(store_train: List[TrainModelRequest]):
     async with lifespan(app=app):
         for item in store_train:
 
+            client_kubeflow = Client()
             
-
-            client = Client()
-            
-            client.create_run_from_pipeline_package('/app/train_pipelines/training_pipeline_one_model.yml', 
+            client_kubeflow.create_run_from_pipeline_package('/app/train_pipelines/training_pipeline_one_model.yml', 
                                                 arguments={
                                                     'n_store': int(item.store_id),
                                                 'seasonality': {
@@ -80,13 +77,13 @@ async def train_model(store_train: List[TrainModelRequest]):
                                                     }, enable_caching=True)
             
 @app.post("/train_all/", status_code=200)
-async def train_all_models(seasonality: TrainAllModelsRequest):
+async def train_all_models(request: TrainAllModelsRequest):
     async with lifespan(app=app):
-        client = Client()
-        client.create_run_from_pipeline_package('/app/train_pipelines/training_pipeline_all_models.yml', 
+        client_kubeflow = Client()
+        client_kubeflow.create_run_from_pipeline_package('/app/train_pipelines/training_pipeline_all_models.yml', 
                                                 arguments={
                                                     'seasonality': {
-                                                    'yaerly' : seasonality.yaerly,
-                                                    'weekly': seasonality.weekly,
-                                                    'daily' : seasonality.daily}
+                                                    'yaerly' : request.yaerly,
+                                                    'weekly': request.weekly,
+                                                    'daily' : request.daily}
                                                     }, enable_caching=True)

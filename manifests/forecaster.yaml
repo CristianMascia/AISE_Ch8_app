@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forecaster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forecaster
+  template:
+    metadata:
+      labels:
+        app: forecaster
+    spec:
+      containers:
+      - name: forecaster
+        image: <YOUR REPOSITORY NAME>.azurecr.io/forecaster
+        ports:
+        - containerPort: 8080
+          name: forecaster

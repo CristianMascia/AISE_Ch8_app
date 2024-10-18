@@ -4,6 +4,9 @@ from kfp.dsl import Dataset
 from kfp.dsl import Input
 from kfp.dsl import Model
 from kfp.dsl import Output
+from kfp import compiler
+import os
+
 
 @dsl.component(base_image='google/cloud-sdk', packages_to_install=['pandas', 'kagglehub'])
 def download_kaggle_dataset(kaggle_df : Output[Dataset]):
@@ -151,7 +154,8 @@ def training_pipeline_one_model(n_store: int, seasonality : dict):
     save_model(model=model, id_store=n_store)
 
 
-from kfp import compiler
 base_path = 'app/train_pipelines/'
+if not os.path.exists(base_path):
+    os.mkdir(base_path)
 compiler.Compiler().compile(training_pipeline_all_models, base_path+'training_pipeline_all_models.yml')
 compiler.Compiler().compile(training_pipeline_one_model, base_path+'training_pipeline_one_model.yml')
