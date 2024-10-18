@@ -24,7 +24,7 @@ Yhe key features of Kubernetes are:
 - Self-Healing: Restarts, replaces, and manages containers based on health checks.
 - Secret and Configuration Management: Manages sensitive information and configuration without exposing them.
 
-To release an application in the cloud, we will utilize Azure Kubernetes Service (AKS). AKS is a managed Kubernetes service designed for the deployment and management of containerized applications. Leveraging AKS necessitates minimal expertise in container orchestration. .
+To release an application in the cloud, we will utilize Azure Kubernetes Service (AKS). AKS is a managed Kubernetes service designed for the deployment and management of containerized applications. Leveraging AKS necessitates minimal expertise in container orchestration.
 
 ## Prerequisites
 - Have Azure CLI
@@ -41,6 +41,8 @@ This command creates a Cluster with a single node (a single worker machine)
 ```
   az aks create --resource-group <resource group> --name <cluster name> --node-count 1  --generate-ssh-keys
 ```
+
+> 📝 To address resource constraints and ensure optimal deployment performance, consider configuring your cluster as an autoscaled cluster with an autoscaled node pool. This dynamic approach allows for automatic adjustment of node count based on fluctuating workload demands. The following command can be used to implement this configuration: ```az aks update --resource-group <rources group> --name <cluster name> --enable-cluster-autoscaler --min-count 1 --max-count 3```
 
 ### Connect kubectl to the cluster
 
