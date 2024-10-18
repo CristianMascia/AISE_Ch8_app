@@ -312,7 +312,7 @@ spec:
 We can see that the selector must be the same for sending the traffic to the Pods, and the target port must match the container port defined in the last manifest. The parameter “port” is the ingress port for the Service.
 
 ```
-  kubectl apply -f manifests/ingress.yaml
+  kubectl apply -f manifests/forecaster_service.yaml
 ```
 
 ```
