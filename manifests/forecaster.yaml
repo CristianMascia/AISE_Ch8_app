@@ -16,5 +16,5 @@ spec:
       - name: forecaster
         image: <YOUR REPOSITORY NAME>.azurecr.io/forecaster
         ports:
-        - containerPort: 8080
+        - containerPort: 3100
           name: forecaster

@@ -8,7 +8,7 @@ from kfp import compiler
 import os
 
 
-@dsl.component(base_image='google/cloud-sdk', packages_to_install=['pandas', 'kagglehub'])
+@dsl.component(packages_to_install=['pandas', 'kagglehub'])
 def download_kaggle_dataset(kaggle_df : Output[Dataset]):
   import kagglehub
   import pandas as pd

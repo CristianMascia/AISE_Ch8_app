@@ -36,13 +36,12 @@ To release an application in the cloud, we will utilize Azure Kubernetes Service
 
 Before initiating the deployment of the application, it is essential to set up a Kubernetes cluster for deployment purposes. A Kubernetes cluster comprises a control plane and a collection of worker machines, referred to as nodes, which execute containerized applications. Each cluster requires at least one worker node to operate Pods. The worker nodes host the Pods, which constitute the components of the application workload. The control plane oversees the worker nodes and Pods within the cluster.
 
-This command creates a Cluster with a single node (a single worker machine)
+This command creates a Cluster with a single node (a single worker machine).
+To address resource constraints and ensure optimal deployment performance, we configure the cluster as an autoscaled cluster with an autoscaled node pool. This dynamic approach allows for automatic adjustment of node count based on fluctuating workload demands.
 
 ```
-  az aks create --resource-group <resource group> --name <cluster name> --node-count 1  --generate-ssh-keys
+  az aks create --resource-group <resource group> --name <cluster name> --node-count 1 --vm-set-type VirtualMachineScaleSets --load-balancer-sku standard --enable-cluster-autoscaler --min-count 1 --max-count 3 --generate-ssh-keys
 ```
-
-> 📝 To address resource constraints and ensure optimal deployment performance, consider configuring your cluster as an autoscaled cluster with an autoscaled node pool. This dynamic approach allows for automatic adjustment of node count based on fluctuating workload demands. The following command can be used to implement this configuration: ```az aks update --resource-group <rources group> --name <cluster name> --enable-cluster-autoscaler --min-count 1 --max-count 3```
 
 
 ### Connect kubectl to the cluster
@@ -282,7 +281,7 @@ This last section defines the Pod specification, in particular the image, the na
       - name: forecaster
         image: <YOUR REPOSITORY NAME>.azurecr.io/forecaster
         ports:
-        - containerPort: 8080
+        - containerPort: 3100
           name: forecaster
 ```
 
